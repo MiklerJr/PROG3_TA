@@ -1,45 +1,61 @@
 package pe.edu.pucp.soft.rh.compras.model;
 
-package pe.edu.pucp.soft.rh.prendas.model.Prenda;
+import pe.edu.pucp.soft.rh.prendas.model.Prenda;
 
 public class PrendaSeleccionada {
-    private static int id=1;
     private int idPrendaSeleccionada;
-    private Prenda prenda;
     private int cantidad;
-    
+	private double precio;
+	private Prenda prenda;
+
     public PrendaSeleccionada(Prenda prenda, int cantidad){
-        this.idPrenda = id;
+        this.idPrendaSeleccionada = prenda.getIdPrenda();
         this.prenda = prenda;
         this.cantidad = cantidad;
-        id += 1;
+		this.precio = prenda.getPrecio() * cantidad;
     }
-    
-    public int getIdPrendaSeleccionada(){
-        return idPrendaSeleccionada;
-    }
-    
-    public Prenda getPrenda(){
-        return prenda;
-    }
-    
-    public int getCantidad(){
-        return cantidad;
-    }
-    
-    public double ObtenerPrecioItem(){
-        return (prenda.getPrecio() * cantidad);
-    }
-    
+
+	public int getIdPrendaSeleccionada() {
+		return idPrendaSeleccionada;
+	}
+
+	public void setIdPrendaSeleccionada(int idPrendaSeleccionada) {
+		this.idPrendaSeleccionada = idPrendaSeleccionada;
+	}
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	public Prenda getPrenda() {
+		return prenda;
+	}
+
+	public void setPrenda(Prenda prenda) {
+		this.prenda = prenda;
+	}
+
     public void aumentarCantidad(int i){
         cantidad += i;
     }
-    
+
     public void decrementarCantidad(int i){
         cantidad -= i;
         //Para cuando en la clase CarritoDeCompras implementemos eliminarPrenda
     }
-    
+
     public void imprimirDatos(){
         String cadena;
         cadena = prenda.devolverDatos();

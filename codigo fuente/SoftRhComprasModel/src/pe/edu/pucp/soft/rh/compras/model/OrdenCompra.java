@@ -1,7 +1,6 @@
 package pe.edu.pucp.soft.rh.compras.model;
 
-import Usuario.Empresa;
-import Usuario.Cliente;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class OrdenCompra {
@@ -10,29 +9,32 @@ public class OrdenCompra {
     private Date fechaPedido;
     private Date fechaPago;
     private Estado estado;
-    private String dni_ruc;
+    private String dni;
     private String correo;
-    private Direccion direccion;
     private double subtotal;
-    private Cliente cliente;
-    private CarritoDeCompras carrito;
+    private int idCliente;
+	private int idCupon;
+	private int idDireccion;
+    private Carrito carrito;
+	private ArrayList<PrendaSeleccionada> prendas;
     private Comprobante comprobante;
-    
-    public OrdenCompra (Date fechaPedido, Date fechaPago, String dni_ruc, 
-            String correo, Direccion direccion, Cliente cliente, CarritoDeCompras carrito){
+
+    public OrdenCompra (Date fechaPedido, Date fechaPago, String dni,
+            String correo, int idCliente, int idDireccion, Carrito carrito,
+			PrendaSeleccionada prendaSeleccionada){
         this.idOrdenCompra = id;
         this.fechaPedido = fechaPedido;
         this.fechaPago = fechaPago;
-        this.estado = estado.REGISTRADO;
-        this.dni_ruc = dni_ruc;
+        this.estado = estado.Registrado;
+        this.dni = dni;
         this.correo = correo;
-        this.direccion = direccion;
+        this.idDireccion = idDireccion;
         this.subtotal = carrito.getPrecioTotal();
-        this.cliente = cliente;
+        this.idCliente = idCliente;
         this.carrito = carrito;
         id += 1;
     }
-    
+
     public int getIdOrdenCompra(){
         return idOrdenCompra;
     }
@@ -49,64 +51,64 @@ public class OrdenCompra {
         return estado;
     }
 
-    public String getDni_ruc() {
-        return dni_ruc;
+    public String getDni() {
+        return dni;
     }
 
     public String getCorreo() {
         return correo;
     }
-    
-    public Direccion getDireccion(){
-        return direccion;
+
+    public int getIdDireccion(){
+        return idDireccion;
     }
-    
+
     public double getSubtotal(){
         return subtotal;
     }
-    
-    public Cliente getCliente(){
-        return cliente;
+
+    public int getIdCliente(){
+        return idCliente;
     }
-    
+
     public Carrito getCarrito(){
         return carrito;
     }
-    
+
     public Comprobante getComprobante(){
         return comprobante;
     }
-    
+
     public void actualizarEstado(Estado estado){
         this.estado = estado;
-        if (estado == Estado.PROCESADO){
+        if (estado == Estado.Procesado){
             this.generarComprobante();
         }
     }
-    
+
     public void procesarPago(){
-        
+
     }
-    
+
     private void generarComprobante(){
-        if (cliente instanceof Cliente){
-            Boleta comprobante = new Boleta(this, dni_ruc, cliente.getNombres(), cliente.getApellidos());
-        }
-        else if (cliente instanceof Empresa){
-            Empresa empresa = (Empresa) cliente;
-            Factura comprobante = new Factura(this, dni_ruc, empresa.getRazonSocial(), empresa.getRepJuridico());
-        }
+//        if(cliente instanceof Cliente) {
+//            Boleta comprobante = new Boleta(this, dni, cliente.getNombres(), cliente.getApellidos());
+//        }
+//        else if(cliente instanceof Empresa) {
+//            Empresa empresa = (Empresa) cliente;
+//            Factura comprobante = new Factura(this, dni, empresa.getRazonSocial(), empresa.getRepJuridico());
+//        }
     }
-    
+
     public void cancelarOrden(){
-        
+
     }
-    
+
     public void confirmarEntrega(){
-        this.estado = Estado.ENTREGADO;
+        this.estado = Estado.Entregado;
     }
-    
+
     public void imprimirDatos(){
-        
+
     }
 }
