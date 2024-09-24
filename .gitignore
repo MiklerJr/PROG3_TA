@@ -1,2 +1,30 @@
 *.class 
 *.exe
+/codigo fuente/SoftRhUsuariosDA/nbproject/private/
+/codigo fuente/SoftRhUsuariosDA/build/
+/codigo fuente/SoftRhUsuariosModel/build/
+/codigo fuente/SoftRhPrendasModel/build/
+/codigo fuente-1/SoftRhComprasBO/nbproject/private/
+/codigo fuente-1/SoftRhComprasDA/nbproject/private/
+/codigo fuente-1/SoftRhComprasModel/build/
+/codigo fuente-1/SoftRhComprasModel/nbproject/private/
+/codigo fuente-1/SoftRhDBManager/nbproject/private/
+/codigo fuente-1/SoftRhPrendasBO/nbproject/private/
+/codigo fuente-1/SoftRhPrendasDA/build/
+/codigo fuente-1/SoftRhPrendasDA/nbproject/private/
+/codigo fuente-1/SoftRhPrendasModel/build/
+/codigo fuente-1/SoftRhPrendasModel/nbproject/private/
+/codigo fuente-1/SoftRhUsuariosDA/build/
+/codigo fuente-1/SoftRhUsuariosDA/nbproject/private/
+/codigo fuente-1/SoftRhUsuariosModel/build/
+/codigo fuente-1/SoftRhUsuariosModel/nbproject/private/
+/codigo fuente-2/SoftRhComprasBO/nbproject/private/
+/codigo fuente-2/SoftRhComprasDA/nbproject/private/
+/codigo fuente-2/SoftRhComprasModel/nbproject/private/
+/codigo fuente-2/SoftRhDBManager/nbproject/private/
+/codigo fuente-2/SoftRhPrendasBO/nbproject/private/
+/codigo fuente-2/SoftRhPrendasDA/build/
+/codigo fuente-2/SoftRhPrendasDA/nbproject/private/
+/codigo fuente-2/SoftRhPrendasModel/build/
+/codigo fuente-2/SoftRhPrendasModel/nbproject/private/
+/codigo fuente-2/SoftRhUsuariosModel/nbproject/private/
