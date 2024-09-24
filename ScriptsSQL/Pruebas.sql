@@ -1,8 +1,9 @@
 
 -- tabla direccion
+DELIMITER //
 
 SELECT * FROM lab4.direccion;
-DELIMITER //
+
 
 CREATE PROCEDURE INSERTAR_DIRECCION(
 	IN _idDireccion INT,
@@ -20,10 +21,6 @@ BEGIN
     VALUES (_idDireccion, _fidCliente, _calle, _numero, _distrito, _provincia, _departamento, _codigoPostal, _referencia);
 END //
 
-DELIMITER ;
-
-
-DELIMITER //
 CREATE PROCEDURE MODIFICAR_DIRECCION(
 	IN _idDireccion INT,
     IN _fidCliente VARCHAR(100),
@@ -48,7 +45,11 @@ BEGIN
     WHERE idDireccion = _idDireccion;
 END //
 
+
+CREATE PROCEDURE ELIMINAR_CLINETE
+
+
+
+
+
 DELIMITER ;
-
-
-
