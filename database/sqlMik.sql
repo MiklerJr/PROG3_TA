@@ -1,0 +1,275 @@
+
+-- tabla direccion
+DELIMITER //
+
+SELECT * FROM TA.direccion;
+
+-- PROCEDIMIENTOS PARA DIRECCION
+
+CREATE PROCEDURE INSERTAR_DIRECCION(
+	IN _idDireccion INT,
+    IN _fidCliente VARCHAR(100),
+    IN _calle VARCHAR(100), 
+    IN _numero VARCHAR(100),
+    IN _distrito VARCHAR(100),
+    IN _provincia VARCHAR(100),
+    IN _departamento VARCHAR(100),
+    IN _codigoPostal VARCHAR(100),
+    IN _referencia TEXT,
+    IN activo tinyint(1)
+)
+BEGIN 
+	INSERT INTO direccion(idDireccion,fidCliente,calle,numero,distrito,provincia,departamento,codigoPostal,referencia,activo) 
+    VALUES (_idDireccion, _fidCliente, _calle, _numero, _distrito, _provincia, _departamento, _codigoPostal, _referencia,_activo);
+END //
+
+CREATE PROCEDURE MODIFICAR_DIRECCION(
+	IN _idDireccion INT,
+    IN _fidCliente VARCHAR(100),
+    IN _calle VARCHAR(100), 
+    IN _numero VARCHAR(100),
+    IN _distrito VARCHAR(100),
+    IN _provincia VARCHAR(100),
+    IN _departamento VARCHAR(100),
+    IN _codigoPostal VARCHAR(100),
+    IN _referencia TEXT,
+    IN activo tinyint(1)
+)
+BEGIN 
+	UPDATE direccion SET 
+		fidCliente = _fidCliente,
+		calle = _calle,
+		numero = _numero,
+		distrito = _distrito,
+		provincia = _provincia,
+		departamento = _departamento,
+		codigoPostal = _codigoPostal,
+		referencia = _referencia ,
+        activo = _activo
+    WHERE idDireccion = _idDireccion;
+END //
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE ELIMINAR_DIRECCION (
+	IN _idDireccion INT
+)
+BEGIN 
+	UPDATE direccion 
+    SET activo = 0 
+    WHERE idDireccion = _idDireccion;
+END//
+
+CREATE PROCEDURE LISTAR_DIRECCION_TODOS()
+BEGIN 
+	SELECT idDireccion, calle, numero, distrito, provincia, departamento, codigoPostal, referencia, activo 
+    FROM direccion;
+END//
+
+
+CREATE PROCEDURE LISTAR_DIRECCION_X_ID(
+	IN _idDireccion INT
+)
+BEGIN 
+	SELECT idDireccion,calle,numero,distrito,provincia,departamento,codigoPostal,referencia,activo 
+    FROM direccion 
+    WHERE idDireccion = _idDireccion;
+END//
+
+
+-- PROCEDIMIENTOS PARA CLIENTE
+
+
+CREATE PROCEDURE INSERTAR_CLIENTE(
+	OUT _idCliente INT,
+    IN _dni VARCHAR(100),
+    IN _nombres VARCHAR(100),
+    IN _apellidos VARCHAR(100),
+    IN _correo VARCHAR(100),
+    IN _contrasenha VARCHAR(100),
+    IN _activo TINYINT,
+    IN _fidDireccion INT,
+    IN _fidCarrito INT,
+    IN _fidOrden INT
+)
+BEGIN 
+	INSERT INTO usuario(dni,nombres,apellidos,correo,contrasenha,activo) 
+    VALUES (_dni,_nombres,_apellidos,_correo,_contrasenha,_activo);
+    
+    SET _idCliente = @@last_insert_id;
+    INSERT INTO cliente(idCliente,fidDireccion,fidCarrito,fidOrden) VALUES (_idCliente,_fidDireccion,_fidCarrito,_fidOrden);
+END//
+
+
+CREATE PROCEDURE MODIFICAR_CLIENTE(
+	IN _idCliente INT,
+    IN _dni VARCHAR(100),
+    IN _nombres VARCHAR(100),
+    IN _apellidos VARCHAR(100),
+    IN _correo VARCHAR(100),
+    IN _contrasenha VARCHAR(100),
+    IN _activo TINYINT
+)
+BEGIN 
+	UPDATE usuario SET 
+		idUsuario = _idCliente, -- ya que estamos modificando a la clase padre desde la hija
+		dni = _dni,
+		nombres = _nombres,
+		apellidos = _apellidos,
+		correo = _correo,
+		contrasenha = _contrasenha,
+		activo = _activo
+    WHERE  idUsuario = _idCliente; -- ya que estamos modificando a la clase padre desde la hija
+END//
+
+CREATE PROCEDURE ELIMINAR_CLIENTE (
+	IN _idCliente INT
+)
+BEGIN 
+	UPDATE usuario 
+    SET activo = 0 
+    WHERE idUsuario = _idCliente;
+END//
+
+CREATE PROCEDURE LISTAR_CLIENTE_TODOS()
+BEGIN 
+	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidDireccion,c.fidCarrito,c.fidOrden
+    FROM usuario,cliente;
+END//
+
+
+CREATE PROCEDURE LISTAR_CLIENTE_X_ID(
+	IN _idCliente INT
+)
+BEGIN 
+	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidDireccion,c.fidCarrito,c.fidOrden
+    FROM usuario,cliente c
+    WHERE idUsuario = _idCliente;
+END//
+
+-- PROCEDIMIENTOS PARA TRABAJADOR
+
+select * from trabajador;
+
+CREATE PROCEDURE INSERTAR_TRABAJADOR(
+	OUT _idTrabajador INT,
+    IN _dni VARCHAR(100),
+    IN _nombres VARCHAR(100),
+    IN _apellidos VARCHAR(100),
+    IN _correo VARCHAR(100),
+    IN _contrasenha VARCHAR(100),
+    IN _activo TINYINT,
+    
+    IN  _fidPromocion INT,
+    IN  _fidCupon	INT,
+    IN  _fechaContrato DATE,
+    IN  _horario 	DATETIME
+)
+BEGIN 
+	
+	INSERT INTO usuario(dni,nombres,apellidos,correo,contrasenha,activo) 
+    VALUES (_dni,_nombres,_apellidos,_correo,_contrasenha,_activo);
+    
+     SET _idTrabajador = @@last_insert_id;
+     
+     INSERT INTO trabajador(idTrabajador,fidPromocion,fidCupon,fechaContrato,horario) 
+     VALUES (_idTrabajador,_fidPromocion,_fidCupon,_fechaContrato,_horario);
+    
+END//
+
+
+CREATE PROCEDURE LISTAR_TRABAJADOR_X_ID(IN _idTrabajador INT)
+BEGIN 
+
+	SELECT t.idTrabajador,u.dni,u.nombres,u.apellidos,u.correo,u.contrasenha,u.activo,t.fidPromocion,t.fidCupon,t.fechaContrato,t.horario FROM trabajador t, usuario u WHERE idUsuario = _idTrabajador and idTrabajador = _idTrabajador;  
+
+END//
+
+
+CREATE PROCEDURE LISTAR_ADMINISTRADOR_X_ID(IN _idAdministrador INT)
+BEGIN 
+
+	SELECT dni,nombres,apellidos,correo,contrasenha,activo FROM usuario WHERE idUsuario = _idAdministrador;  
+
+END//
+
+
+
+
+
+
+
+
+
+
+-- PROCEDIMIENTOS PARA CUPON
+
+select * from cupon;
+
+CREATE PROCEDURE INSERTAR_CUPON(
+	IN _idCupon INT,
+    IN _fidTrabajador INT,
+    IN _fidOrden INT,
+    IN _codigo VARCHAR(100),
+    IN _descripcion TEXT,
+    IN _fechaInicio DATE,
+    IN _fechaFin DATE,
+    IN _usado TINYINT(1),
+    IN _activo TINYINT(1)
+)
+BEGIN 
+	INSERT INTO cupon(idCupon,fidTrabajador,fidOrden,codigo,descripcion,fechaInicio,fechaFin,usado,activo) 
+    VALUES (_idCupon,_fidTrabajador,_fidOrden,_codigo,_descripcion,_fechaInicio,_fechaFin,_usado,_activo);
+END//
+
+CREATE PROCEDURE MODIFICAR_CUPON(
+	IN _idCupon INT,
+    IN _fidTrabajador INT,
+    IN _fidOrden INT,
+    IN _codigo VARCHAR(100),
+    IN _descripcion TEXT,
+    IN _fechaInicio DATE,
+    IN _fechaFin DATE,
+    IN _usado TINYINT(1),
+    IN _activo TINYINT(1)
+)
+BEGIN 
+	UPDATE usuario SET 
+		idCupon = _idCupon,
+		fidTrabajador = _fidTrabajador,
+		fidOrden = _fidOrden,
+		codigo = _codigo,
+		descripcion = _descripcion,
+		fechaInicio = _fechaInicio,
+		fechaFin = _fechaFin,
+        usado = _usado,
+        activo = _activo
+    WHERE  idCupon = _idCupon;
+END//
+
+CREATE PROCEDURE ELIMINAR_CUPON (
+	IN _idCupon INT
+)
+BEGIN 
+	UPDATE cupon 
+    SET activo = 0 
+    WHERE idCupon = _idCupon;
+END//
+
+CREATE PROCEDURE LISTAR_CUPON_TODOS()
+BEGIN 
+	SELECT idCupon,fidTrabajador,fidOrden,codigo,descripcion,fechaInicio,fechaFin,usado,activo 
+    FROM cupon;
+END//
+
+
+CREATE PROCEDURE LISTAR_CUPON_X_ID(
+	IN idCupon INT
+)
+BEGIN 
+	SELECT idCupon,fidTrabajador,fidOrden,codigo,descripcion,fechaInicio,fechaFin,usado,activo 
+    FROM usuario
+    WHERE idCupon = _idCupon;
+END//
