@@ -15,7 +15,7 @@ CREATE PROCEDURE INSERTAR_DIRECCION(
     IN _departamento VARCHAR(100),
     IN _codigoPostal VARCHAR(100),
     IN _referencia TEXT,
-    IN activo tinyint(1)
+    IN _activo tinyint(1)
 )
 BEGIN 
 	INSERT INTO direccion(fidCliente,calle,numero,distrito,provincia,departamento,codigoPostal,referencia,activo) 
@@ -32,7 +32,7 @@ CREATE PROCEDURE MODIFICAR_DIRECCION(
     IN _departamento VARCHAR(100),
     IN _codigoPostal VARCHAR(100),
     IN _referencia TEXT,
-    IN activo tinyint(1)
+    IN _activo tinyint(1)
 )
 BEGIN 
 	UPDATE direccion SET 
