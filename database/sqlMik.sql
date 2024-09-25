@@ -132,8 +132,8 @@ END//
 
 CREATE PROCEDURE LISTAR_CLIENTE_TODOS()
 BEGIN 
-	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidCarrito
-    FROM usuario,cliente c
+	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,fidCarrito
+    FROM usuario,cliente 
     WHERE idUsuario = idCliente;
 END//
 
@@ -142,8 +142,8 @@ CREATE PROCEDURE LISTAR_CLIENTE_X_ID(
 	IN _idCliente INT
 )
 BEGIN 
-	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidCarrito
-    FROM usuario,cliente c
+	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,fidCarrito
+    FROM usuario,cliente
     WHERE idUsuario = idCliente and idCliente = _idCliente;
 END//
 
