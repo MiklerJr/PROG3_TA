@@ -90,16 +90,14 @@ CREATE PROCEDURE INSERTAR_CLIENTE(
     IN _correo VARCHAR(100),
     IN _contrasenha VARCHAR(100),
     IN _activo TINYINT,
-    IN _fidDireccion INT,
-    IN _fidCarrito INT,
-    IN _fidOrden INT
+    IN _fidCarrito INT
 )
 BEGIN 
 	INSERT INTO usuario(dni,nombres,apellidos,correo,contrasenha,activo) 
     VALUES (_dni,_nombres,_apellidos,_correo,_contrasenha,_activo);
     
     SET _idCliente = @@last_insert_id;
-    INSERT INTO cliente(idCliente,fidDireccion,fidCarrito,fidOrden) VALUES (_idCliente,_fidDireccion,_fidCarrito,_fidOrden);
+    INSERT INTO cliente(idCliente,fidCarrito) VALUES (_idCliente,_fidCarrito);
 END//
 
 
@@ -114,7 +112,7 @@ CREATE PROCEDURE MODIFICAR_CLIENTE(
 )
 BEGIN 
 	UPDATE usuario SET 
-		idUsuario = _idCliente, -- ya que estamos modificando a la clase padre desde la hija
+
 		dni = _dni,
 		nombres = _nombres,
 		apellidos = _apellidos,
@@ -135,7 +133,7 @@ END//
 
 CREATE PROCEDURE LISTAR_CLIENTE_TODOS()
 BEGIN 
-	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidDireccion,c.fidCarrito,c.fidOrden
+	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidCarrito
     FROM usuario,cliente;
 END//
 
@@ -144,7 +142,7 @@ CREATE PROCEDURE LISTAR_CLIENTE_X_ID(
 	IN _idCliente INT
 )
 BEGIN 
-	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidDireccion,c.fidCarrito,c.fidOrden
+	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidCarrito
     FROM usuario,cliente c
     WHERE idUsuario = _idCliente;
 END//
@@ -189,7 +187,6 @@ CREATE PROCEDURE MODIFICAR_TRABAJADOR(
 )
 BEGIN 
 	UPDATE usuario SET 
-		idUsuario = _idTrabajador, -- ya que estamos modificando a la clase padre desde la hija
 		dni = _dni,
 		nombres = _nombres,
 		apellidos = _apellidos,
@@ -219,10 +216,52 @@ END//
 
 CREATE PROCEDURE LISTAR_TRABAJADOR_TODOS()
 BEGIN 
-	SELECT t.idTrabajador,u.dni,u.nombres,u.apellidos,u.correo,u.contrasenha,u.activo,t.fechaContrato,t.horario FROM trabajador t, usuario u WHERE  t._idTrabajador = u._idUsuario;  
+	SELECT t.idTrabajador,u.dni,u.nombres,u.apellidos,u.correo,u.contrasenha,u.activo,t.fechaContrato,t.horario FROM trabajador t, usuario u WHERE  t.idTrabajador = u.idUsuario;  
 END//
 
 -- PROCEDIMIENTOS PARA ADMINISTRADOR
+
+CREATE PROCEDURE INSERTAR_ADMINISTRADOR(
+	OUT _idAdministrador INT,
+    IN _dni VARCHAR(100),
+    IN _nombres VARCHAR(100),
+    IN _apellidos VARCHAR(100),
+    IN _correo VARCHAR(100),
+    IN _contrasenha VARCHAR(100),
+    IN _activo TINYINT
+)
+BEGIN 
+	
+	INSERT INTO usuario(dni,nombres,apellidos,correo,contrasenha,activo) 
+    VALUES (_dni,_nombres,_apellidos,_correo,_contrasenha,_activo);
+    
+     SET _idAdministrador = @@last_insert_id;
+     
+     INSERT INTO administrador (idAdministrador) 
+     VALUES (_idAdministrador);
+    
+END//
+
+CREATE PROCEDURE MODIFICAR_ADMINISTRADOR(
+	IN _idAdministrador INT,
+    IN _dni VARCHAR(100),
+    IN _nombres VARCHAR(100),
+    IN _apellidos VARCHAR(100),
+    IN _correo VARCHAR(100),
+    IN _contrasenha VARCHAR(100),
+    IN _activo TINYINT
+)
+BEGIN 
+	UPDATE usuario SET 
+		
+		dni = _dni,
+		nombres = _nombres,
+		apellidos = _apellidos,
+		correo = _correo,
+		contrasenha = _contrasenha,
+		activo = _activo
+    WHERE  idUsuario = _idAdministrador; -- ya que estamos modificando a la clase padre desde la hija
+END//
 
 
 CREATE PROCEDURE ELIMINAR_ADMINISTRADOR(IN _idAdministrador INT)
@@ -244,21 +283,11 @@ END//
 
 
 
-
-
-
-
-
-
-
 -- PROCEDIMIENTOS PARA CUPON
-
-select * from cupon;
 
 CREATE PROCEDURE INSERTAR_CUPON(
 	IN _idCupon INT,
     IN _fidTrabajador INT,
-    IN _fidOrden INT,
     IN _codigo VARCHAR(100),
     IN _descripcion TEXT,
     IN _fechaInicio DATE,
@@ -267,14 +296,13 @@ CREATE PROCEDURE INSERTAR_CUPON(
     IN _activo TINYINT(1)
 )
 BEGIN 
-	INSERT INTO cupon(idCupon,fidTrabajador,fidOrden,codigo,descripcion,fechaInicio,fechaFin,usado,activo) 
-    VALUES (_idCupon,_fidTrabajador,_fidOrden,_codigo,_descripcion,_fechaInicio,_fechaFin,_usado,_activo);
+	INSERT INTO cupon(idCupon,fidTrabajador,codigo,descripcion,fechaInicio,fechaFin,usado,activo) 
+    VALUES (_idCupon,_fidTrabajador,_codigo,_descripcion,_fechaInicio,_fechaFin,_usado,_activo);
 END//
 
 CREATE PROCEDURE MODIFICAR_CUPON(
 	IN _idCupon INT,
     IN _fidTrabajador INT,
-    IN _fidOrden INT,
     IN _codigo VARCHAR(100),
     IN _descripcion TEXT,
     IN _fechaInicio DATE,
@@ -283,10 +311,8 @@ CREATE PROCEDURE MODIFICAR_CUPON(
     IN _activo TINYINT(1)
 )
 BEGIN 
-	UPDATE usuario SET 
-		idCupon = _idCupon,
+	UPDATE cupon SET 
 		fidTrabajador = _fidTrabajador,
-		fidOrden = _fidOrden,
 		codigo = _codigo,
 		descripcion = _descripcion,
 		fechaInicio = _fechaInicio,
@@ -307,7 +333,7 @@ END//
 
 CREATE PROCEDURE LISTAR_CUPON_TODOS()
 BEGIN 
-	SELECT idCupon,fidTrabajador,fidOrden,codigo,descripcion,fechaInicio,fechaFin,usado,activo 
+	SELECT idCupon,fidTrabajador,codigo,descripcion,fechaInicio,fechaFin,usado,activo 
     FROM cupon;
 END//
 
@@ -316,7 +342,8 @@ CREATE PROCEDURE LISTAR_CUPON_X_ID(
 	IN idCupon INT
 )
 BEGIN 
-	SELECT idCupon,fidTrabajador,fidOrden,codigo,descripcion,fechaInicio,fechaFin,usado,activo 
-    FROM usuario
+	SELECT idCupon,fidTrabajador,codigo,descripcion,fechaInicio,fechaFin,usado,activo 
+    FROM cupon
     WHERE idCupon = _idCupon;
 END//
+
