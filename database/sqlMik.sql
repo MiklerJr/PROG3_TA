@@ -7,7 +7,6 @@ SELECT * FROM TA.direccion;
 -- PROCEDIMIENTOS PARA DIRECCION
 
 CREATE PROCEDURE INSERTAR_DIRECCION(
-	IN _idDireccion INT,
     IN _fidCliente VARCHAR(100),
     IN _calle VARCHAR(100), 
     IN _numero VARCHAR(100),
@@ -19,8 +18,8 @@ CREATE PROCEDURE INSERTAR_DIRECCION(
     IN activo tinyint(1)
 )
 BEGIN 
-	INSERT INTO direccion(idDireccion,fidCliente,calle,numero,distrito,provincia,departamento,codigoPostal,referencia,activo) 
-    VALUES (_idDireccion, _fidCliente, _calle, _numero, _distrito, _provincia, _departamento, _codigoPostal, _referencia,_activo);
+	INSERT INTO direccion(fidCliente,calle,numero,distrito,provincia,departamento,codigoPostal,referencia,activo) 
+    VALUES (_fidCliente, _calle, _numero, _distrito, _provincia, _departamento, _codigoPostal, _referencia,_activo);
 END //
 
 CREATE PROCEDURE MODIFICAR_DIRECCION(
@@ -286,7 +285,6 @@ END//
 -- PROCEDIMIENTOS PARA CUPON
 
 CREATE PROCEDURE INSERTAR_CUPON(
-	IN _idCupon INT,
     IN _fidTrabajador INT,
     IN _codigo VARCHAR(100),
     IN _descripcion TEXT,
@@ -296,8 +294,8 @@ CREATE PROCEDURE INSERTAR_CUPON(
     IN _activo TINYINT(1)
 )
 BEGIN 
-	INSERT INTO cupon(idCupon,fidTrabajador,codigo,descripcion,fechaInicio,fechaFin,usado,activo) 
-    VALUES (_idCupon,_fidTrabajador,_codigo,_descripcion,_fechaInicio,_fechaFin,_usado,_activo);
+	INSERT INTO cupon(fidTrabajador,codigo,descripcion,fechaInicio,fechaFin,usado,activo) 
+    VALUES (_fidTrabajador,_codigo,_descripcion,_fechaInicio,_fechaFin,_usado,_activo);
 END//
 
 CREATE PROCEDURE MODIFICAR_CUPON(
@@ -346,4 +344,3 @@ BEGIN
     FROM cupon
     WHERE idCupon = _idCupon;
 END//
-
