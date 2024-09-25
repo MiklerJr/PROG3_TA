@@ -4,7 +4,7 @@ package soft.rh.prendas.modelo;
 import java.util.ArrayList;
 
 public class Prenda {
-    private static Integer id=6;
+    private static Integer id=1;
     private Integer idPrenda;
     private String nombre;
     private String descripcion;

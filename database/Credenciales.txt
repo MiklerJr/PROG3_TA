@@ -1,2 +1,4 @@
 username=root
 password=programacion3
+hostname=softrhdb.cgltghhyc0nf.us-east-1.rds.amazonaws.com
+port=3306

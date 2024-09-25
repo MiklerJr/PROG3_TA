@@ -15,7 +15,7 @@ public class PrendaDAOImplementacion
     private Prenda prenda;
     //Constructor
     public PrendaDAOImplementacion() {
-        super("mydb.prenda");
+        super("prenda");
         this.prenda = null;
     }
     //Especificacion de la tabla  

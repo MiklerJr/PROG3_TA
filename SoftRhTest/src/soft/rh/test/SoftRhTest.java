@@ -10,6 +10,7 @@ import soft.rh.prendas.modelo.TipoPrenda;
 
 public class SoftRhTest {
     public static void main(String[] args) {
+           
         test_database_manager();
         test_insert();
         System.out.println("insert correcto");
