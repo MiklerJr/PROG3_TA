@@ -133,7 +133,8 @@ END//
 CREATE PROCEDURE LISTAR_CLIENTE_TODOS()
 BEGIN 
 	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidCarrito
-    FROM usuario,cliente;
+    FROM usuario,cliente c
+    WHERE idUsuario = idCliente;
 END//
 
 
@@ -143,7 +144,7 @@ CREATE PROCEDURE LISTAR_CLIENTE_X_ID(
 BEGIN 
 	SELECT idUsuario,dni,nombres,apellidos,correo,contrasenha,activo,c.fidCarrito
     FROM usuario,cliente c
-    WHERE idUsuario = _idCliente;
+    WHERE idUsuario = idCliente and idCliente = _idCliente;
 END//
 
 -- PROCEDIMIENTOS PARA TRABAJADOR
