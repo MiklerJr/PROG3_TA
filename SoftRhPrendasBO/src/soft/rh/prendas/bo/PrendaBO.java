@@ -1,5 +1,6 @@
 package soft.rh.prendas.bo;
 
+import java.util.ArrayList;
 import soft.rh.prendas.dao.PrendaDAO;
 import soft.rh.prendas.daoimplementacion.PrendaDAOImplementacion;
 import soft.rh.prendas.modelo.Genero;
@@ -31,4 +32,11 @@ public class PrendaBO {
         return this.prendaDAO.actualizarPorId(id, prendaModificada);
     }
     
+    public Integer eliminacionLogica(Integer id){
+        return this.prendaDAO.eliminar(id);
+    }
+    
+    public ArrayList<Prenda> obtenerTodos() {
+        return this.prendaDAO.obtenerTodos();
+    }
 }

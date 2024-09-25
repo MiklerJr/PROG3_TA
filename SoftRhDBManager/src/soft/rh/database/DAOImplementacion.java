@@ -49,7 +49,7 @@ public abstract class DAOImplementacion {
     
     protected ResultSet ejecutarConsultaEnBD(String sql) throws SQLException{
         statement = conexion.createStatement();
-        
+        System.out.println("FLAKO ES: " + sql);
         return statement.executeQuery(sql);
     }
     //Especificacion de la tabla    
@@ -101,7 +101,7 @@ public abstract class DAOImplementacion {
 
         sql += ") values (";
 
-        for(int i = 0; i < atributos.size(); i++){
+        for(int i = 0; i < valores.size(); i++){
             sql += "'" + valores.get(i) + "'";
 
             if(i + 1 < atributos.size()){
@@ -161,13 +161,14 @@ public abstract class DAOImplementacion {
         return sql;
     }
     //Eliminar
-    
-    //Seleccionar todos
-    public void listarTodos(){
+    public Integer eliminar(String whereClausula)
+    {
+        Integer resultado = 0;
+        
         try{
             iniciarTransaccion();
-            String sql = generarSQLParaInsercion();
-            result_set = this.ejecutarConsultaEnBD(sql);
+            String sql = generarSQLParaEliminar(whereClausula);
+            resultado = this.ejecutarModificacionesEnBD(sql);
             comitarTransaccion();
         } catch (SQLException ex){
             try {
@@ -184,26 +185,44 @@ public abstract class DAOImplementacion {
                 Logger.getLogger(DAOImplementacion.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        return resultado;
+    }
     
+    private String generarSQLParaEliminar(String whereClausula){
+        String sql = "update " + tabla + " set activo = 0 where ";
+        
+        sql += whereClausula;
+
+        return sql;
+    }
+    //Seleccionar todos
+    public void listarTodos(){
+        try{
+            iniciarTransaccion();
+            String sql = generarSQLParaListarTodos();
+            result_set = this.ejecutarConsultaEnBD(sql);
+        } catch (SQLException ex){
+            Logger.getLogger(DAOImplementacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private String generarSQLParaListarTodos(){
-        String sql = "update " + tabla + " set ";
-        ArrayList<String> atributos, valores;
+        String sql = "select ";
+        ArrayList<String> atributos;
         
         atributos = obtenerListaDeAtributos();
-        valores = obtenerListaDeValores();
-        
-       for (int i = 0; i < atributos.size(); i++) {
-            sql += atributos.get(i) + "='" + valores.get(i) + "'";
-           
-            if (i + 1 < atributos.size()) {
-                sql += ',';
-            }
+                 
+        for(int i = 0; i < atributos.size(); i++){
+            sql += atributos.get(i);
+
+            if(i + 1 < atributos.size()){
+                sql += ",";
+            } 
         }
-
-        sql += " WHERE " + whereClausula;
-
+        
+        sql += " from " + tabla;
+        
         return sql;
     }
     

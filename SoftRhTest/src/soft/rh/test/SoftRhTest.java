@@ -12,7 +12,15 @@ public class SoftRhTest {
     public static void main(String[] args) {
         test_database_manager();
         test_insert();
-        test_update();
+        System.out.println("insert correcto");
+        test_insert();
+        System.out.println("insert correcto");
+        test_update(3);
+        System.out.println("update correcto");
+        test_list_all();
+        System.out.println("listar todos correcto");
+        test_logic_delete(4);
+        System.out.println("delete correcto");
     }
 
     public static void test_database_manager()
@@ -36,15 +44,29 @@ public class SoftRhTest {
                 Genero.Hombre, "rojo", 18.31, 20);
     }
 
-    public static void test_update()
+    public static void test_update(Integer id)
     {
-        Prenda prendaModificada = new Prenda("polo anti mega", "otro polo",
+        Prenda prendaModificada = new Prenda("polo anti xdee", "asdad polo",
                 TipoPrenda.Polo, "polo anti mega.png", Talla.S,
                 Genero.Hombre, "rojo", 18.31, 20);
         PrendaBO servicioPrenda = new PrendaBO();
         
-        prendaModificada.setId(1);
+        prendaModificada.setId(id);
         
-        servicioPrenda.actualizarPorId(1, prendaModificada);
+        servicioPrenda.actualizarPorId(id, prendaModificada);
+    }
+    
+    public static void test_logic_delete(Integer id)
+    {
+        PrendaBO servicioPrenda = new PrendaBO();
+ 
+        servicioPrenda.eliminacionLogica(id);
+    }
+
+    public static void test_list_all()
+    {
+        PrendaBO servicioPrenda = new PrendaBO();
+        
+        servicioPrenda.obtenerTodos();
     }
 }

@@ -10,7 +10,7 @@ public interface PrendaDAO {
     //internamente se hará un asignación
     public Integer actualizarPorId(Integer id, Prenda prendaModificada);
     
-    public Integer eliminar(Prenda prenda);
+    public Integer eliminar(Integer id);
     
     public ArrayList<Prenda> obtenerTodos();
     
