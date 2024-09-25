@@ -162,8 +162,6 @@ CREATE PROCEDURE INSERTAR_TRABAJADOR(
     IN _contrasenha VARCHAR(100),
     IN _activo TINYINT,
     
-    IN  _fidPromocion INT,
-    IN  _fidCupon	INT,
     IN  _fechaContrato DATE,
     IN  _horario 	DATETIME
 )
@@ -174,19 +172,68 @@ BEGIN
     
      SET _idTrabajador = @@last_insert_id;
      
-     INSERT INTO trabajador(idTrabajador,fidPromocion,fidCupon,fechaContrato,horario) 
-     VALUES (_idTrabajador,_fidPromocion,_fidCupon,_fechaContrato,_horario);
+     INSERT INTO trabajador(idTrabajador,fechaContrato,horario) 
+     VALUES (_idTrabajador,_fechaContrato,_horario);
+    
+END//
+
+CREATE PROCEDURE MODIFICAR_TRABAJADOR(
+	IN _idTrabajador INT,
+    IN _dni VARCHAR(100),
+    IN _nombres VARCHAR(100),
+    IN _apellidos VARCHAR(100),
+    IN _correo VARCHAR(100),
+    IN _contrasenha VARCHAR(100),
+    IN _activo TINYINT,
+    IN  _fechaContrato DATE
+)
+BEGIN 
+	UPDATE usuario SET 
+		idUsuario = _idTrabajador, -- ya que estamos modificando a la clase padre desde la hija
+		dni = _dni,
+		nombres = _nombres,
+		apellidos = _apellidos,
+		correo = _correo,
+		contrasenha = _contrasenha,
+		activo = _activo
+    WHERE  idUsuario = _idTrabajador; -- ya que estamos modificando a la clase padre desde la hija
+    
+    UPDATE trabajador SET
+    fechaContrato = _fechaContrato
+    WHERE idTrabajador = _idTrabajador;
     
 END//
 
 
+CREATE PROCEDURE ELIMINAR_TRABAJADOR(IN _idTrabajador INT)
+BEGIN 
+	UPDATE usuario SET activo = 0 WHERE idUsuario = _idTrabajador; 
+END//
+
 CREATE PROCEDURE LISTAR_TRABAJADOR_X_ID(IN _idTrabajador INT)
 BEGIN 
 
-	SELECT t.idTrabajador,u.dni,u.nombres,u.apellidos,u.correo,u.contrasenha,u.activo,t.fidPromocion,t.fidCupon,t.fechaContrato,t.horario FROM trabajador t, usuario u WHERE idUsuario = _idTrabajador and idTrabajador = _idTrabajador;  
+	SELECT t.idTrabajador,u.dni,u.nombres,u.apellidos,u.correo,u.contrasenha,u.activo,t.fechaContrato,t.horario FROM trabajador t, usuario u WHERE idUsuario = _idTrabajador and idTrabajador = _idTrabajador;  
 
 END//
 
+CREATE PROCEDURE LISTAR_TRABAJADOR_TODOS()
+BEGIN 
+	SELECT t.idTrabajador,u.dni,u.nombres,u.apellidos,u.correo,u.contrasenha,u.activo,t.fechaContrato,t.horario FROM trabajador t, usuario u WHERE  t._idTrabajador = u._idUsuario;  
+END//
+
+-- PROCEDIMIENTOS PARA ADMINISTRADOR
+
+
+CREATE PROCEDURE ELIMINAR_ADMINISTRADOR(IN _idAdministrador INT)
+BEGIN 
+	UPDATE usuario SET activo = 0 WHERE idUsuario = _idAdministrador; 
+END//
+
+CREATE PROCEDURE LISTAR_ADMINISTRADOR_TODOS()
+BEGIN 
+	SELECT dni,nombres,apellidos,correo,contrasenha,activo FROM usuario;
+END//
 
 CREATE PROCEDURE LISTAR_ADMINISTRADOR_X_ID(IN _idAdministrador INT)
 BEGIN 
